@@ -1,0 +1,85 @@
+name: CD
+run-name: ${{ inputs.dry-run && 'Pre' || '' }}Release ${{ inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'SDK用来发布的CDN下载链接'
+        required: true
+        type: string
+      iris-url:
+        description: 'ElectronSDK依赖的iris链接'
+        required: true
+        type: string
+
+      version:
+        description: 'SDK用来发布的版本号'
+        required: true
+        type: string
+
+      dry-run:
+        description: '正式发布前的预发布测试（Npm发布后无法删除）'
+        default: true
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+          path: repo
+    
+      - name: Download SDK and unzip
+        run: |
+          shopt -s globstar
+          curl -o sdk.zip ${{ inputs.url }}
+          unzip sdk.zip
+          mv cmviot_v2v*/* repo/
+
+      - name: Update iris url
+        run: |
+          sed "s/\"iris_sdk_mac\": \"\(.*\)\"/\"iris_sdk_mac\": \"${{ inputs.iris-url }}\"/g" package.json > tmp
+          mv tmp package.json
+        working-directory: repo
+
+      - name: Update version
+        run: |
+          sed "s/\"version\": \"\(.*\)\"/\"version\": \"${{ inputs.version }}\"/g" package.json > tmp
+          mv tmp package.json
+        working-directory: repo
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Setup Npm
+        run: |
+          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
+
+      - name: Dry Run Release
+        if: ${{ inputs.dry-run }}
+        run: |
+          npm publish --dry-run
+        working-directory: repo
+
+      - name: NPM Publish
+        if: ${{ !inputs.dry-run }}
+        run: |
+          npm publish
+        working-directory: repo
+
+      - name: Commit and push modify
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Release ${{ inputs.version }} with ${{ inputs.url }}
+          branch: release/${{ inputs.version }}
+          repository: repo
+          tagging_message: ${{ !inputs.dry-run && inputs.version || '' }}
+          create_branch: true
+          push_options: '--force'
