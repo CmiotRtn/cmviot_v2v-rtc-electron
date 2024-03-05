@@ -60,6 +60,8 @@ jobs:
       - name: Setup Npm
         run: |
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
+          npm install
+        working-directory: repo
 
       - name: Dry Run Release
         if: ${{ inputs.dry-run }}
