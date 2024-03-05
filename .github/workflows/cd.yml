@@ -8,10 +8,6 @@ on:
         description: 'SDK用来发布的CDN下载链接'
         required: true
         type: string
-      iris-url:
-        description: 'ElectronSDK依赖的iris链接'
-        required: true
-        type: string
 
       version:
         description: 'SDK用来发布的版本号'
@@ -25,7 +21,7 @@ on:
 
 jobs:
   release:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -39,22 +35,9 @@ jobs:
           curl -o sdk.zip ${{ inputs.url }}
           unzip sdk.zip -d repo/
 
-      - name: Update iris url
-        run: |
-          sed "s#\"iris_sdk_mac\": \"\(.*\)\"#\"iris_sdk_mac\": \"${{ inputs.iris-url }}\"#g" package.json > tmp
-          mv tmp package.json
-        working-directory: repo
-
       - name: Update version
         run: |
           sed "s/\"version\": \"\(.*\)\"/\"version\": \"${{ inputs.version }}\"/g" package.json > tmp
-          mv tmp package.json
-        working-directory: repo
-
-      - name: Remove prepack script
-        run: |
-          brew install jq
-          jq 'del(.scripts.prepack)' package.json > tmp
           mv tmp package.json
         working-directory: repo
 
@@ -66,8 +49,6 @@ jobs:
       - name: Setup Npm
         run: |
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
-          npm install --ignore-scripts
-        working-directory: repo
 
       - name: Dry Run Release
         if: ${{ inputs.dry-run }}
