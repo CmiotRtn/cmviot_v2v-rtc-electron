@@ -36,7 +36,6 @@ jobs:
     
       - name: Download SDK and unzip
         run: |
-          shopt -s globstar
           curl -o sdk.zip ${{ inputs.url }}
           unzip sdk.zip -d repo/
 
