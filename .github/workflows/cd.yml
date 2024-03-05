@@ -42,7 +42,7 @@ jobs:
 
       - name: Update iris url
         run: |
-          sed "s/\"iris_sdk_mac\": \"\(.*\)\"/\"iris_sdk_mac\": \"${{ inputs.iris-url }}\"/g" package.json > tmp
+          sed "s#\"iris_sdk_mac\": \"\(.*\)\"#\"iris_sdk_mac\": \"${{ inputs.iris-url }}\"#g" package.json > tmp
           mv tmp package.json
         working-directory: repo
 
