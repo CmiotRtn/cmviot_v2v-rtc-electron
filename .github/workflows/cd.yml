@@ -39,7 +39,7 @@ jobs:
           shopt -s globstar
           curl -o sdk.zip ${{ inputs.url }}
           unzip sdk.zip
-          mv cmviot_v2v*/* repo/
+          mv Electron*/* repo/
 
       - name: Update iris url
         run: |
