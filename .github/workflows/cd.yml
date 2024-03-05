@@ -59,8 +59,7 @@ jobs:
       - name: Setup Npm
         run: |
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
-          yarn config set agora-electron-sdk-pre-built 0
-          yarn install
+          npm install --ignore-scripts
         working-directory: repo
 
       - name: Dry Run Release
