@@ -51,12 +51,12 @@ jobs:
           mv tmp package.json
         working-directory: repo
 
-
       - name: Remove prepack script
         run: |
           brew install jq
           jq 'del(.scripts.prepack)' package.json > tmp
           mv tmp package.json
+        working-directory: repo
 
       - name: Setup Node
         uses: actions/setup-node@v3
