@@ -1,0 +1,60 @@
+import './extension/ICmviotRtcEngineExExtension';
+import { ChannelMediaRelayConfiguration, ConnectionStateType, DataStreamConfig, EncryptionConfig, LiveTranscoding, SimulcastStreamConfig, SimulcastStreamMode, SpatialAudioParams, UserInfo, VideoCanvas, VideoEncoderConfiguration, VideoMirrorModeType, VideoStreamType, VideoSubscriptionOptions, WatermarkOptions } from './CmviotBase';
+import { RenderModeType } from './CmviotMediaBase';
+import { ChannelMediaOptions, IRtcEngine, LeaveChannelOptions, StreamFallbackOptions } from './ICmviotRtcEngine';
+export declare class RtcConnection {
+    channelId?: string;
+    localUid?: number;
+}
+export declare abstract class IRtcEngineEx extends IRtcEngine {
+    abstract joinChannelEx(token: string, connection: RtcConnection, options: ChannelMediaOptions): number;
+    abstract leaveChannelEx(connection: RtcConnection, options?: LeaveChannelOptions): number;
+    abstract updateChannelMediaOptionsEx(options: ChannelMediaOptions, connection: RtcConnection): number;
+    abstract setVideoEncoderConfigurationEx(config: VideoEncoderConfiguration, connection: RtcConnection): number;
+    abstract setupRemoteVideoEx(canvas: VideoCanvas, connection: RtcConnection): number;
+    abstract muteRemoteAudioStreamEx(uid: number, mute: boolean, connection: RtcConnection): number;
+    abstract muteRemoteVideoStreamEx(uid: number, mute: boolean, connection: RtcConnection): number;
+    abstract setRemoteVideoStreamTypeEx(uid: number, streamType: VideoStreamType, connection: RtcConnection): number;
+    abstract muteLocalAudioStreamEx(mute: boolean, connection: RtcConnection): number;
+    abstract muteLocalVideoStreamEx(mute: boolean, connection: RtcConnection): number;
+    abstract muteAllRemoteAudioStreamsEx(mute: boolean, connection: RtcConnection): number;
+    abstract muteAllRemoteVideoStreamsEx(mute: boolean, connection: RtcConnection): number;
+    abstract setSubscribeAudioBlocklistEx(uidList: number[], uidNumber: number, connection: RtcConnection): number;
+    abstract setSubscribeAudioAllowlistEx(uidList: number[], uidNumber: number, connection: RtcConnection): number;
+    abstract setSubscribeVideoBlocklistEx(uidList: number[], uidNumber: number, connection: RtcConnection): number;
+    abstract setSubscribeVideoAllowlistEx(uidList: number[], uidNumber: number, connection: RtcConnection): number;
+    abstract setRemoteVideoSubscriptionOptionsEx(uid: number, options: VideoSubscriptionOptions, connection: RtcConnection): number;
+    abstract setRemoteVoicePositionEx(uid: number, pan: number, gain: number, connection: RtcConnection): number;
+    abstract setRemoteUserSpatialAudioParamsEx(uid: number, params: SpatialAudioParams, connection: RtcConnection): number;
+    abstract setRemoteRenderModeEx(uid: number, renderMode: RenderModeType, mirrorMode: VideoMirrorModeType, connection: RtcConnection): number;
+    abstract enableLoopbackRecordingEx(connection: RtcConnection, enabled: boolean, deviceName?: string): number;
+    abstract adjustRecordingSignalVolumeEx(volume: number, connection: RtcConnection): number;
+    abstract muteRecordingSignalEx(mute: boolean, connection: RtcConnection): number;
+    abstract adjustUserPlaybackSignalVolumeEx(uid: number, volume: number, connection: RtcConnection): number;
+    abstract getConnectionStateEx(connection: RtcConnection): ConnectionStateType;
+    abstract enableEncryptionEx(connection: RtcConnection, enabled: boolean, config: EncryptionConfig): number;
+    abstract createDataStreamEx(config: DataStreamConfig, connection: RtcConnection): number;
+    abstract sendStreamMessageEx(streamId: number, data: Uint8Array, length: number, connection: RtcConnection): number;
+    abstract addVideoWatermarkEx(watermarkUrl: string, options: WatermarkOptions, connection: RtcConnection): number;
+    abstract clearVideoWatermarkEx(connection: RtcConnection): number;
+    abstract sendCustomReportMessageEx(id: string, category: string, event: string, label: string, value: number, connection: RtcConnection): number;
+    abstract enableAudioVolumeIndicationEx(interval: number, smooth: number, reportVad: boolean, connection: RtcConnection): number;
+    abstract startRtmpStreamWithoutTranscodingEx(url: string, connection: RtcConnection): number;
+    abstract startRtmpStreamWithTranscodingEx(url: string, transcoding: LiveTranscoding, connection: RtcConnection): number;
+    abstract updateRtmpTranscodingEx(transcoding: LiveTranscoding, connection: RtcConnection): number;
+    abstract stopRtmpStreamEx(url: string, connection: RtcConnection): number;
+    abstract startOrUpdateChannelMediaRelayEx(configuration: ChannelMediaRelayConfiguration, connection: RtcConnection): number;
+    abstract startChannelMediaRelayEx(configuration: ChannelMediaRelayConfiguration, connection: RtcConnection): number;
+    abstract updateChannelMediaRelayEx(configuration: ChannelMediaRelayConfiguration, connection: RtcConnection): number;
+    abstract stopChannelMediaRelayEx(connection: RtcConnection): number;
+    abstract pauseAllChannelMediaRelayEx(connection: RtcConnection): number;
+    abstract resumeAllChannelMediaRelayEx(connection: RtcConnection): number;
+    abstract getUserInfoByUserAccountEx(userAccount: string, connection: RtcConnection): UserInfo;
+    abstract getUserInfoByUidEx(uid: number, connection: RtcConnection): UserInfo;
+    abstract enableDualStreamModeEx(enabled: boolean, streamConfig: SimulcastStreamConfig, connection: RtcConnection): number;
+    abstract setDualStreamModeEx(mode: SimulcastStreamMode, streamConfig: SimulcastStreamConfig, connection: RtcConnection): number;
+    abstract setHighPriorityUserListEx(uidList: number[], uidNum: number, option: StreamFallbackOptions, connection: RtcConnection): number;
+    abstract takeSnapshotEx(connection: RtcConnection, uid: number, filePath: string): number;
+    abstract startMediaRenderingTracingEx(connection: RtcConnection): number;
+}
+//# sourceMappingURL=ICmviotRtcEngineEx.d.ts.map

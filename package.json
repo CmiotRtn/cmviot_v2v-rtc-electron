@@ -1,0 +1,131 @@
+{
+  "name": "cmviot-electron-sdk",
+  "version": "4.2.2-build.233-rc.1",
+  "description": "",
+  "main": "js/CmviotSdk",
+  "types": "types/CmviotSdk.d.ts",
+  "source": "ts/CmviotSdk",
+  "files": [
+    "js",
+    "ts",
+    "types",
+    "scripts",
+    "!scripts/terra",
+    "gulpfile.js",
+    "CHANGELOG.md",
+    "!**/__tests__"
+  ],
+  "scripts": {
+    "totalBuild": "cross-env-shell gulp totalBuild \\\"--INIT_CWD=$INIT_CWD\\\"",
+    "build": "cross-env-shell gulp build \\\"--INIT_CWD=$INIT_CWD\\\"",
+    "clean": "cross-env-shell gulp clean \\\"--INIT_CWD=$INIT_CWD\\\"",
+    "syncLib": "cross-env-shell gulp syncLib \\\"--INIT_CWD=$INIT_CWD\\\"",
+    "buildJS": "cross-env-shell gulp buildJS \\\"--INIT_CWD=$INIT_CWD\\\"",
+    "zipBuild": "cross-env-shell gulp zipBuild \\\"--INIT_CWD=$INIT_CWD\\\"",
+    "build_mac_debug": "cmake-js rebuild --CDCMAKE_BUILD_TYPE=Debug --CDCMAKE_OSX_ARCHITECTURES=\"arm64;x86_64\" -G Xcode",
+    "build_mac_release": "cmake-js rebuild --CDCMAKE_BUILD_TYPE=Release --CDCMAKE_OSX_ARCHITECTURES=\"arm64;x86_64\" -G Xcode",
+    "build_windows_win32_debug": "cmake-js rebuild --arch=ia32 --CDCMAKE_OSX_ARCHITECTURES=\"i386\" --CDCMAKE_BUILD_TYPE=Debug -G \"Visual Studio 16 2019\" ",
+    "build_windows_win32_release": "cmake-js rebuild --arch=ia32 --CDCMAKE_OSX_ARCHITECTURES=\"i386\" --CDCMAKE_BUILD_TYPE=Release",
+    "build_windows_x64_debug": "cmake-js rebuild --arch=x64 --CDCMAKE_OSX_ARCHITECTURES=\"x86_64\" --CDCMAKE_BUILD_TYPE=Debug -G \"Visual Studio 16 2019\"",
+    "build_windows_x64_release": "cmake-js rebuild --arch=x64 --CDCMAKE_OSX_ARCHITECTURES=\"x86_64\" --CDCMAKE_BUILD_TYPE=Release",
+    "build_linux_debug": "cmake-js rebuild --arch=x64 --CDCMAKE_BUILD_TYPE=Debug -G \"Unix Makefiles\"",
+    "build_linux_release": "cmake-js rebuild --arch=x64 --CDCMAKE_BUILD_TYPE=Release -G \"Unix Makefiles\"",
+    "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "install": "cross-env-shell gulp NPM_Install \\\"--INIT_CWD=$INIT_CWD\\\"",
+    "release": "release-it",
+    "example": "yarn --cwd example",
+    "bootstrap": "yarn config set cmviot-electron-sdk-pre-built 0 && yarn example && yarn install && yarn patch-package && yarn build:ts-interface && yarn totalBuild && yarn link && yarn example link cmviot-electron-sdk && yarn config delete cmviot-electron-sdk-pre-built",
+    "build:ts-interface": "ts-interface-builder ts/Private/*.ts -o ts/Private/ti/"
+  },
+  "keywords": [],
+  "author": "cmviot",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-typescript": "^7.21.5",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@evilmartians/lefthook": "^1.2.2",
+    "@release-it/conventional-changelog": "^5.0.0",
+    "@types/jest": "^28.1.2",
+    "@types/json-bigint": "^1.0.1",
+    "@types/lodash.isequal": "^4.5.6",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "cmake-js": "6.3.2",
+    "commitlint": "^17.0.2",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-auto-import": "^0.1.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^26.9.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "gulp-zip": "^5.1.0",
+    "jest": "^28.1.1",
+    "patch-package": "^6.5.0",
+    "prettier": "^2.0.5",
+    "release-it": "^15.0.0",
+    "ts-interface-builder": "^0.3.3",
+    "typescript": "^4.5.2"
+  },
+  "engines": {
+    "node": ">= 14.0.0"
+  },
+  "packageManager": "^yarn@1.22.15",
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/scripts/terra",
+      "<rootDir>/js/",
+      "<rootDir>/types/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      }
+    }
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
+    "download": "^8.0.0",
+    "eventemitter3": "^5.0.1",
+    "fs-extra": "^11.1.1",
+    "gulp": "^4.0.2",
+    "json-bigint": "^1.0.0",
+    "lodash.isequal": "^4.5.0",
+    "minimist": "^1.2.5",
+    "shelljs": "^0.8.4",
+    "ts-interface-checker": "^1.0.2",
+    "winston": "^3.3.3",
+    "yuv-buffer": "1.0.0",
+    "yuv-canvas": "1.2.6"
+  },
+  "cmviot_electron": {
+    "iris_sdk_mac": "https://download.agora.io/sdk/release/iris_4.2.2.233-build.1_DCG_Mac_Video_20240116_0424.zip"
+  }
+}
